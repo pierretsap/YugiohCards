@@ -52,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="@+string/card type"
                 android:textSize="16sp"
+                android:layout_margin="4dp"
                 app:layout_constraintStart_toStartOf="@+id/card_name"
                 app:layout_constraintTop_toBottomOf="@+id/card_name" />
 
@@ -59,7 +60,7 @@
                 android:id="@+id/card_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_margin="4dp"
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="@+id/card_name"
                 app:layout_constraintTop_toBottomOf="@+id/card_type" />

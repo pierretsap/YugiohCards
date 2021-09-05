@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CardInfoResponse {
     @SerializedName("data")
-    private List<CardInfo> data;
+    private final List<CardInfo> data;
 
     public CardInfoResponse(List<CardInfo> data) {
         this.data = data;
@@ -14,9 +14,5 @@ public class CardInfoResponse {
 
     public List<CardInfo> getData() {
         return data;
-    }
-
-    public void setData(List<CardInfo> data) {
-        this.data = data;
     }
 }

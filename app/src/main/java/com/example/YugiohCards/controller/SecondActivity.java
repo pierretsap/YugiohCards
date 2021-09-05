@@ -1,10 +1,10 @@
 package com.example.YugiohCards.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.YugiohCards.R;
@@ -29,6 +29,9 @@ public class SecondActivity extends AppCompatActivity {
         setData();
     }
 
+    /**
+     * Get all card data to display on second activity
+     */
     private void getData(){
         if (getIntent().hasExtra("sName")
                 && getIntent().hasExtra("sType")
@@ -41,6 +44,9 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Display card data on second activity
+     */
     private void setData(){
         nameView.setText(name);
         typeView.setText(type);

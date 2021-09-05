@@ -16,6 +16,14 @@ public class CardInfo {
     @SerializedName("card_images")
     private List<CardImage> image;
 
+    public CardInfo(Integer id, String name, String desc, String type, List<CardImage> image) {
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+        this.type = type;
+        this.image = image;
+    }
+
     public List<CardImage> getImage() {
         return image;
     }
@@ -32,13 +40,6 @@ public class CardInfo {
         this.type = type;
     }
 
-    public CardInfo(Integer id, String name, String desc, String type, List<CardImage> image) {
-        this.id = id;
-        this.name = name;
-        this.desc = desc;
-        this.type = type;
-        this.image = image;
-    }
 
     public Integer getId() {
         return id;

@@ -1,64 +1,71 @@
 package com.example.YugiohCards.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.YugiohCards.R;
-import com.example.YugiohCards.model.CardInfoResponse;
-import com.example.YugiohCards.services.YugiohInstance;
-import com.example.YugiohCards.services.YugiohAPI;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
+import com.example.YugiohCards.fragment.GridFragment;
+import com.example.YugiohCards.fragment.MyListFragment;
+import com.example.YugiohCards.fragment.VisitedFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    private final static CompositeDisposable composite = new CompositeDisposable();
-    private RecyclerView mRecyclerView;
-    private CardInfoResponse cardResponse;
-
-
-    public void getAllCards (){
-        YugiohAPI yugiohApi = YugiohInstance.instance().create(YugiohAPI.class);
-        composite.clear();
-        composite.add(yugiohApi.getCardInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CardInfoResponse>(){
-
-                    @Override
-                    public void onSuccess(CardInfoResponse cardInfos) {
-                        displayCardInfo(cardInfos);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("testcard", e.getMessage()+'\n'+e.getCause());
-                    }
-                }));
-    }
-
-    private void displayCardInfo(CardInfoResponse cardInfos) {
-        mRecyclerView = findViewById(R.id.recycleView);
-        MyAdapter adapter = new MyAdapter(MainActivity.this, cardInfos.getData());
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        mRecyclerView.setAdapter(adapter);
-
-
-    }
+    private final MyListFragment mListFragment = new MyListFragment();
+    private final GridFragment mGridFragment = new GridFragment();
+    private final VisitedFragment mVisitedFragment = new VisitedFragment();
+    private final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = mListFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getAllCards();
+        fm.beginTransaction().add(R.id.fragment_container, mVisitedFragment, null).commit();
+        fm.beginTransaction().add(R.id.fragment_container, mGridFragment, null).commit();
+        fm.beginTransaction().add(R.id.fragment_container, mListFragment, null).commit();
 
+        BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigationBar);
+        bottomNavigation.setOnNavigationItemSelectedListener(onBottomNaviationListener);
     }
+
+
+
+    // element to create navigation switcher
+    private final BottomNavigationView.OnNavigationItemSelectedListener onBottomNaviationListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_home:
+                    if(active != mListFragment) {
+                        fm.beginTransaction().show(mListFragment).commit();
+                    }
+                    else {
+                        fm.beginTransaction().hide(active).show(mListFragment).commit();
+                    }
+                    active = mListFragment;
+                    break;
+                case R.id.menu_grid:
+                    if(active != mGridFragment) {
+                        fm.beginTransaction().hide(active).show(mGridFragment).commit();
+                        active = mGridFragment;
+                    }
+                    break;
+                case R.id.menu_visited:
+                    if(active != mVisitedFragment) {
+                        fm.beginTransaction().hide(active).show(mVisitedFragment).commit();
+                        active = mVisitedFragment;
+                    }
+                    break;
+            }
+            return true;
+        }
+    };
+
 }

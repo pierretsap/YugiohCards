@@ -11,10 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.example.YugiohCards.controller.SecondActivity"
-            android:parentActivityName="com.example.YugiohCards.controller.MainActivity"
             android:label="Details"
+            android:screenOrientation="portrait"
         />
-        <activity android:name="com.example.YugiohCards.controller.MainActivity">
+        <activity android:name="com.example.YugiohCards.controller.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
